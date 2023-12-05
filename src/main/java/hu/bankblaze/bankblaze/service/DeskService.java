@@ -80,9 +80,7 @@ public class DeskService {
             if (permission.getForPremium() && queueNumberService.countPremium() > 0) {
                 queueNumberList.add(queueNumberService.getNextPremium());
             }
-            System.out.println(queueNumberList);
             QueueNumber queueNumber = queueNumberService.getSmallestNumber(queueNumberList);
-            System.out.println(queueNumber);
             desk.setQueueNumber(queueNumber);
             deskRepository.save(desk);
             return desk;
