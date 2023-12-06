@@ -11,6 +11,10 @@ public interface DeskRepository extends JpaRepository<Desk, Long> {
 
     Desk findByQueueNumber(QueueNumber queueNumber);
 
+
+    List<Desk> findDeskByQueueNumber(QueueNumber queueNumber);
+
+    List<Desk> findDeskByEmployeeId(Long employeeId);
     int countByQueueNumberIsNotNull();
     int countByQueueNumberIsNotNullAndQueueNumberToRetailIsTrue();
     int countByQueueNumberIsNotNullAndQueueNumberToCorporateIsTrue();
