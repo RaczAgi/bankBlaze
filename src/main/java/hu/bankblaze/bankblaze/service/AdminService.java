@@ -24,6 +24,7 @@ public class AdminService {
     private DeskService deskService;
     private PermissionService permissionService;
     private QueueNumberRepository queueNumberRepository;
+    private QueueNumberService queueNumberService;
     private PermissionRepository permissionRepository;
 
     @Autowired
@@ -39,10 +40,6 @@ public class AdminService {
 
     public List<Employee> getAllAdmins() {
         return employeeRepository.getAllAdmins();
-    }
-
-    public Employee getAdminById(Long id) {
-        return employeeRepository.findById(id).orElse(null);
     }
 
     public void saveAdmin(Employee employee) {
@@ -101,14 +98,14 @@ public class AdminService {
     public int setActualCount(Employee employee) {
         Permission permission = permissionService.getPermissionByEmployee(employee);
         int actualCount = 0;
-        if (permission.getForRetail()) {
-            actualCount = queueNumberRepository.countByActiveIsTrueAndToRetailIsTrue();
-        } else if (permission.getForCorporate()) {
-            actualCount = queueNumberRepository.countByActiveIsTrueAndToCorporateIsTrue();
-        } else if (permission.getForTeller()) {
-            actualCount = queueNumberRepository.countByActiveIsTrueAndToTellerIsTrue();
-        } else if (permission.getForPremium()) {
-            actualCount = queueNumberRepository.countByActiveIsTrueAndToPremiumIsTrue();
+        if (permission.getForRetail() && queueNumberService.countRetail() > 0) {
+            actualCount = queueNumberService.countRetail();
+        } else if (permission.getForCorporate() && queueNumberService.countCorporate() > 0) {
+            actualCount = queueNumberService.countCorporate();
+        } else if (permission.getForTeller() && queueNumberService.countTeller() > 0) {
+            actualCount = queueNumberService.countTeller();
+        } else if (permission.getForPremium() && queueNumberService.countPremium() > 0) {
+            actualCount = queueNumberService.countPremium();
         }
         return actualCount;
     }
@@ -126,22 +123,6 @@ public class AdminService {
             employeeCount = permissionRepository.countByForPremiumTrue();
         }
         return employeeCount;
-    }
-
-    public QueueNumber determineNextQueueNumber(String permission, Permission permissions) {
-        QueueNumber nextQueueNumber = null;
-        if (permission != null) {
-            if (Boolean.TRUE.equals(permissions.getForRetail())) {
-                nextQueueNumber = queueNumberRepository.findFirstByActiveTrueAndToRetailTrue();
-            } else if (Boolean.TRUE.equals(permissions.getForCorporate())) {
-                nextQueueNumber = queueNumberRepository.findFirstByActiveTrueAndToCorporateTrue();
-            } else if (Boolean.TRUE.equals(permissions.getForTeller())) {
-                nextQueueNumber = queueNumberRepository.findFirstByActiveTrueAndToTellerTrue();
-            } else if (Boolean.TRUE.equals(permissions.getForPremium())) {
-                nextQueueNumber = queueNumberRepository.findFirstByActiveTrueAndToPremiumTrue();
-            }
-        }
-        return nextQueueNumber;
     }
 
     public void processNextQueueNumber(QueueNumber nextQueueNumber) {
@@ -188,13 +169,13 @@ public class AdminService {
         }
         return actualPermission;
     }
+
     public void deleteAdminAndRelatedData(String name) {
         Employee employee = employeeRepository.findByName(name).orElse(null);
         if (employee != null) {
             deskService.removeEmployeeFromDesk(employee.getId());
             permissionService.deleteEmployee(employee.getId());
             employeeRepository.deleteById(employee.getId());
-
         }
     }
 
