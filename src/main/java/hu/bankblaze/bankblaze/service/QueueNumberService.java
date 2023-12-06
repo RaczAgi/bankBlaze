@@ -92,19 +92,19 @@ public class QueueNumberService {
     }
 
     public int countRetail() {
-        return queueNumberRepository.countByActiveIsTrueAndToRetailIsTrue() - 1;
+        return queueNumberRepository.countByActiveIsTrueAndToRetailIsTrue();
     }
 
     public int countCorporate() {
-        return queueNumberRepository.countByActiveIsTrueAndToCorporateIsTrue() - 1;
+        return queueNumberRepository.countByActiveIsTrueAndToCorporateIsTrue();
     }
 
     public int countTeller() {
-        return queueNumberRepository.countByActiveIsTrueAndToTellerIsTrue() - 1;
+        return queueNumberRepository.countByActiveIsTrueAndToTellerIsTrue();
     }
 
     public int countPremium() {
-        return queueNumberRepository.countByActiveIsTrueAndToPremiumIsTrue() - 1;
+        return queueNumberRepository.countByActiveIsTrueAndToPremiumIsTrue();
     }
 
     public int getCount() throws Exception {

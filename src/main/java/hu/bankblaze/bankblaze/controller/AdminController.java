@@ -45,10 +45,22 @@ public class AdminController {
     @GetMapping("/statistics")
     public String getStatistics(Model model) {
         model.addAttribute("admins", adminService.getAllAdmins());
-        model.addAttribute("retailCount", queueNumberService.countRetail());
-        model.addAttribute("corporateCount", queueNumberService.countCorporate());
-        model.addAttribute("tellerCount", queueNumberService.countTeller());
-        model.addAttribute("premiumCount", queueNumberService.countPremium());
+        model.addAttribute("retailLeft",
+                queueNumberService.countRetail() - deskService.countRetailCustomersUnderService());
+        model.addAttribute("retailAtDesk", deskService.countRetailCustomersUnderService());
+        model.addAttribute("retailSum", queueNumberService.countRetail());
+        model.addAttribute("corporateLeft",
+                queueNumberService.countCorporate() - deskService.countCorporateCustomersUnderService());
+        model.addAttribute("corporateAtDesk", deskService.countCorporateCustomersUnderService());
+        model.addAttribute("corporateSum", queueNumberService.countCorporate());
+        model.addAttribute("tellerLeft",
+                queueNumberService.countTeller() - deskService.countTellerCustomersUnderService());
+        model.addAttribute("tellerAtDesk", deskService.countTellerCustomersUnderService());
+        model.addAttribute("tellerSum", queueNumberService.countTeller());
+        model.addAttribute("premiumLeft",
+                queueNumberService.countPremium() - deskService.countPremiumCustomersUnderService());
+        model.addAttribute("premiumAtDesk", deskService.countPremiumCustomersUnderService());
+        model.addAttribute("premiumSum", queueNumberService.countPremium());
         return "statistics";
     }
 

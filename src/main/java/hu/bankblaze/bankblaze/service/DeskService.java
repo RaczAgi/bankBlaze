@@ -94,4 +94,23 @@ public class DeskService {
         return deskRepository.findByQueueNumber(queueNumber);
     }
 
+    public int countCustomersUnderService() {
+        return deskRepository.countByQueueNumberIsNotNull();
+    }
+
+    public int countRetailCustomersUnderService() {
+        return deskRepository.countByQueueNumberIsNotNullAndQueueNumberToRetailIsTrue();
+    }
+
+    public int countCorporateCustomersUnderService() {
+        return deskRepository.countByQueueNumberIsNotNullAndQueueNumberToCorporateIsTrue();
+    }
+
+    public int countTellerCustomersUnderService() {
+        return deskRepository.countByQueueNumberIsNotNullAndQueueNumberToTellerTrue();
+    }
+
+    public int countPremiumCustomersUnderService() {
+        return deskRepository.countByQueueNumberIsNotNullAndQueueNumberToPremiumIsTrue();
+    }
 }
