@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <link rel="stylesheet" href="/styles.css"/>
+</head>
+<body>
+<header>
+    <h1 class="admin-name" th:text="${admins.get(0).getName() + ' - Pult kiosztás'}"></h1>
+    <h3 class="logout-btn"><a th:href="@{/logout}">Kijelentkezés</a></h3>
+    <form th:action="@{admin/eod}" method="post">
+        <button class="end-btn" type="submit">Napzárás</button>
+    </form>
+</header>
+
+<div id="buttons1">
+    <form th:action="@{/admin}" method="get">
+        <button class="btn1" style="--clr:rgb(7, 197, 245);" type="submit">Jogosultságok</button>
+    </form>
+    <form th:action="@{/admin/statistics}" method="get">
+        <button class="btn1" style="--clr:rgb(7, 197, 245);" type="submit">Fiók áttekintő</button>
+    </form>
+    <form th:action="@{/admin/desk}" method="get">
+        <button class="btn1" style="--clr:rgb(7, 197, 245);" type="submit">Pult kiosztás</button>
+    </form>
+    <form th:action="@{/admin/registration}" method="get">
+        <button class="btn1" style="--clr:rgb(7, 197, 245);" type="submit">Új ügyintéző felvétele</button>
+    </form>
+    <form th:action="@{/admin/management}" method="get">
+        <button class="btn1" style="--clr:rgb(7, 197, 245);" type="submit">Ügyintéző kezelése</button>
+    </form>
+
+</div>
+
+<div class="table-container">
+    <form th:action="@{/admin/desk}" method="post">
+        <table>
+            <thead>
+            <tr>
+                <th>Pultok</th>
+                <th th:each="actual : ${employees}" th:text="${actual.getName()}"></th>
+            </tr>
+            </thead>
+            <tbody th:each="desk : ${desks}">
+            <tr>
+                <td th:text="${desk.getId()} + '. pult'"></td>
+                <td th:each="current : ${employees}">
+                    <input type="radio" th:value="${current.getId()}" th:name="'employee' + ${desk.getId()}"
+                           th:checked="${desk.employee} != null ? ${desk.employee.getId() == current.getId()} : false">
+                    <input type="hidden" th:value="${desk.getId()}" th:name="'desk' + ${desk.getId()}">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button class="save-btn" type="submit">Mentés</button>
+    </form>
+</div>
+</body>
+</html>

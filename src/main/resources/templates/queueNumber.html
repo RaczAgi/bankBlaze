@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer</title>
+    <link rel="stylesheet" href="/styles.css"/>
+</head>
+<header>
+    <a th:href="@{/home}"></a>
+    <form th:action="@{/queue/showNumber}" method="post">
+        <button class="home-btn" type="submit" name="action" value="delete">Kezdőoldal</button>
+    </form>
+</header>
+<body>
+<div class="queue-number-container">
+    <h1 th:text="'Ön a ' + ${header} + ' Szolgáltatásokat választotta'"></h1>
+    <h1>Kérjük adja meg a nevét!</h1>
+    <form th:action="@{/queue/queueNumber}" method="post" class="input-container">
+        <label>
+            <input class="placeholder" placeholder="Ide írja be, hogy szólíhatjuk..." type="text" name="name"
+                   required autocomplete="off">
+        </label>
+
+        <button class="submit-btn" type="submit">Tovább</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Customer</title>
+    <link rel="stylesheet" href="styles.css"/>
+</head>
+<header>
+    <a th:href="@{/home}"></a>
+    <form th:action="@{/queue/showNumber}" method="post">
+        <button class="home-btn" type="submit" name="action" value="delete">Kezdőoldal</button>
+    </form>
+</header>
+
+<body>
+<div class="container">
+    <h1>Pénztár</h1>
+    <div id="buttons" style="padding-top:8%;">
+        <form method="post" th:action="@{/teller}">
+            <input type="hidden" th:value="${tellers.get(0).getId()}" name="id">
+            <button class="btn" style="--clr:rgb(7, 197, 245);" th:text="${tellers.get(0).name}"><span>Pénztár
+                        befizetés</span></button>
+        </form>
+        <form method="post" th:action="@{/teller}">
+            <input type="hidden" th:value="${tellers.get(1).getId()}" name="id">
+            <button class="btn" style="--clr:rgb(7, 197, 245);" th:text="${tellers.get(1).name}"><span>Pénztár
+                        kifizetés</span></button>
+        </form>
+        <form method="post" th:action="@{/teller}">
+            <input type="hidden" th:value="${tellers.get(2).getId()}" name="id">
+            <button class="btn" style="--clr:rgb(7, 197, 245);"
+                    th:text="${tellers.get(2).name}"><span>Valutaváltás</span></button>
+        </form>
+    </div>
+</div>
+</body>
+
+</html>
