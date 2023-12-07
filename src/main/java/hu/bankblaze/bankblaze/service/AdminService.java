@@ -96,18 +96,21 @@ public class AdminService {
     }
 
     public int setActualCount(Employee employee) {
-        Permission permission = permissionService.getPermissionByEmployee(employee);
+        Desk desk = deskService.nextQueueNumber(employee);
         int actualCount = 0;
-        if (permission.getForRetail() && queueNumberService.countRetail() > 0) {
-            actualCount = queueNumberService.countRetail();
-        } else if (permission.getForCorporate() && queueNumberService.countCorporate() > 0) {
-            actualCount = queueNumberService.countCorporate();
-        } else if (permission.getForTeller() && queueNumberService.countTeller() > 0) {
-            actualCount = queueNumberService.countTeller();
-        } else if (permission.getForPremium() && queueNumberService.countPremium() > 0) {
-            actualCount = queueNumberService.countPremium();
+        if (desk != null) {
+            if (desk.getQueueNumber().getToRetail()) {
+                actualCount = queueNumberService.countRetail();
+            } else if (desk.getQueueNumber().getToCorporate()) {
+                actualCount = queueNumberService.countCorporate();
+            } else if (desk.getQueueNumber().getToTeller()) {
+                actualCount = queueNumberService.countTeller();
+            } else if (desk.getQueueNumber().getToPremium()) {
+                actualCount = queueNumberService.countPremium();
+            }
+            return actualCount;
         }
-        return actualCount;
+        return 0;
     }
 
     public int setEmployeeCount(Employee employee) {
@@ -156,19 +159,23 @@ public class AdminService {
     }
 
     public String setActualPermission(Employee employee) {
-        Permission permission = permissionService.getPermissionByEmployee(employee);
-        String actualPermission = null;
-        if (permission.getForRetail()) {
-            actualPermission = "Lakosság";
-        } else if (permission.getForCorporate()) {
-            actualPermission = "Vállalat";
-        } else if (permission.getForTeller()) {
-            actualPermission = "Pénztár";
-        } else if (permission.getForPremium()) {
-            actualPermission = "Prémium";
+        Desk desk = deskService.nextQueueNumber(employee);
+        String actualPermission = "";
+        if (desk != null) {
+            if (desk.getQueueNumber().getToRetail()) {
+                actualPermission = "Lakosság";
+            } else if (desk.getQueueNumber().getToCorporate()) {
+                actualPermission = "Vállalat";
+            } else if (desk.getQueueNumber().getToTeller()) {
+                actualPermission = "Pénztár";
+            } else if (desk.getQueueNumber().getToPremium()) {
+                actualPermission = "Prémium";
+            }
         }
         return actualPermission;
     }
+
+
 
     public void deleteAdminAndRelatedData(String name) {
         Employee employee = employeeRepository.findByName(name).orElse(null);
