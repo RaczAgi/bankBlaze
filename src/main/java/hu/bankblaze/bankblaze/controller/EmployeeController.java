@@ -53,8 +53,18 @@ public class EmployeeController {
         return "redirect:/employee";
     }
 
+    @PostMapping("/recall")
+    public String recallQueueNumber() {
+        Employee employee = adminService.getEmployeeByName(adminService.getLoggedInUsername());
+        Desk desk = deskService.getDeskByEmployeeId(employee.getId());
+        if (desk != null) {
+            simpMessagingTemplate.convertAndSend("/topic/app", desk);
+        }
+        return "redirect:/desk/next";
+    }
+
     @GetMapping("/closure")
-    public String getClosure(){
+    public String getClosure() {
         Employee employee = adminService.getEmployeeByName(adminService.getLoggedInUsername());
         Desk desk = deskService.nextQueueNumber(employee);
         QueueNumber nextQueueNumber = queueNumberService.getQueueNumberById(desk.getQueueNumber().getId());
@@ -72,11 +82,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/deleteNumber")
-    public String deleteNumber(){
+    public String deleteNumber() {
         Employee employee = adminService.getEmployeeByName(adminService.getLoggedInUsername());
-        Desk desk = deskService.nextQueueNumber(employee);
-        QueueNumber nextQueueNumber = queueNumberService.getQueueNumberById(desk.getQueueNumber().getId());
-        adminService.deleteNextQueueNumber(nextQueueNumber);
+        deskService.deleteNextQueueNumber(employee);
         return "redirect:/employee";
     }
 }

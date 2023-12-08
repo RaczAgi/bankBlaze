@@ -51,7 +51,10 @@ public class SecurityConfig {
                                 "/webjars/sockjs-client/sockjs.min.js",
                                 "/webjars/stomp-websocket/stomp.min.js",
                                 "/SocketConfig.js",
-                                "/bankBlaze-websocket/**").permitAll()
+                                "/bankBlaze-websocket/**",
+                                "/topic/**",
+                                "/app",
+                                "/topic/app").permitAll()
                         .requestMatchers("/audio/notification.mp3",
                                 "/audio/**").permitAll()
                         .anyRequest().authenticated()
@@ -81,6 +84,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -88,6 +92,7 @@ public class SecurityConfig {
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
+
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration authenticationConfiguration) throws Exception {

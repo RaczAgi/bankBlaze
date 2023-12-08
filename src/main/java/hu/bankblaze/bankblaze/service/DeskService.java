@@ -60,15 +60,12 @@ public class DeskService {
         return deskRepository.findByEmployeeId(employeeId);
     }
 
-    public void removeEmployeeFromDesk(Long employeeId){
+    public void removeEmployeeFromDesk(Long employeeId) {
         Desk deskWithEmployeeId = getDeskByEmployeeId(employeeId);
         if (deskWithEmployeeId != null) {
             deskWithEmployeeId.setEmployee(null);
             deskRepository.save(deskWithEmployeeId);
         }
-    }
-    public void saveDesk(Desk desk) {
-        deskRepository.save(desk);
     }
 
     public Desk nextQueueNumber(Employee employee) {
@@ -98,10 +95,6 @@ public class DeskService {
         }
     }
 
-    protected Desk findDeskByQueueNumber(QueueNumber queueNumber) {
-        return deskRepository.findByQueueNumber(queueNumber);
-    }
-
     public int countRetailCustomersUnderService() {
         return deskRepository.countByQueueNumberIsNotNullAndQueueNumberToRetailIsTrue();
     }
@@ -116,6 +109,18 @@ public class DeskService {
 
     public int countPremiumCustomersUnderService() {
         return deskRepository.countByQueueNumberIsNotNullAndQueueNumberToPremiumIsTrue();
+    }
+
+    public void deleteNextQueueNumber(Employee employee) {
+        Desk desk = getDeskByEmployeeId(employee.getId());
+        if (desk != null) {
+            QueueNumber nextQueueNumber = desk.getQueueNumber();
+            desk.setQueueNumber(null);
+            deskRepository.save(desk);
+            queueNumberService.deleteQueueNumberById(nextQueueNumber.getId());
+        } else {
+            throw new IllegalArgumentException("A sorszám értéke null, nem törölhető.");
+        }
     }
 
     public void deleteQueueNumbersFromAllTheDesks() {
