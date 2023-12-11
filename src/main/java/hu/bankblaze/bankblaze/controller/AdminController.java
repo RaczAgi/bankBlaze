@@ -128,7 +128,7 @@ public class AdminController {
         deskService.deleteQueueNumbersFromAllTheDesks();
         deskService.deleteEmployeesFromAllTheDesks();
         queueNumberService.deleteAllQueueNumbers();
-        return "redirect:/admin";
+        return "redirect:/admin/statistics";
     }
 
 }
