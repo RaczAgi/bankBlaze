@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Kezdőlap - BankBlaze</title>
+    <link rel="stylesheet" href="/styles.css"/>
+</head>
+
+<body>
+<div class="container">
+    <h1>Üdvözöljük Bankunkban!</h1>
+
+    <div id="buttons">
+        <h2>Kérjük, válasszon szolgáltatást:</h2>
+        <form th:action="@{/home}" method="post">
+            <button class="btn" style="--clr:rgb(7, 197, 245);" type="submit" name="whereTo"
+                    value="1"><span>Lakossági szolgáltatások</span></button>
+        </form>
+
+        <form th:action="@{/home}" method="post">
+            <button class="btn" style="--clr:rgb(7, 197, 245);" type="submit" name="whereTo"
+                    value="2"><span>Vállalati szolgáltatások</span></button>
+        </form>
+
+        <form th:action="@{/home}" method="post">
+            <button class="btn" style="--clr:rgb(7, 197, 245); " type="submit" name="whereTo"
+                    value="3"><span>Pénztár</span></button>
+        </form>
+
+        <form th:action="@{/home}" method="post">
+            <button class="btn" style="--clr:rgb(7, 197, 245);" type="submit" name="whereTo"
+                    value="4"><span>Prémium</span></button>
+        </form>
+    </div>
+</div>
+</body>
+
+</html>

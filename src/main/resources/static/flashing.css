@@ -1,0 +1,20 @@
+@keyframes flash {
+    0% {color: white}
+    10% {color: black}
+    20% {color: white}
+    30% {color: black}
+    40% {color: white}
+    50% {color: black}
+    60% {color: white}
+    70% {color: black}
+    80% {color: white}
+    90% {color: black}
+    100% {color: white}
+}
+
+.flash {
+    background-color: red;
+    animation-name: flash;
+    animation-duration: 4s;
+    margin: 1px;
+}

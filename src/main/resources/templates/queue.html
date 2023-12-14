@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BankBlaze</title>
+    <link rel="stylesheet" href="/styles.css"/>
+    <link rel="stylesheet" href="/flashing.css"/>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/SocketConfig.js"></script>
+    <script>
+        window.onload = function () {
+            connect();
+        };
+    </script>
+</head>
+<body>
+<table class="queueCall">
+    <thead>
+    <tr>
+        <th>Pult</th>
+        <th>Sorszám</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="desk : ${desks}" th:id="'row'+ ${desk.getId()}">
+        <td th:id="'desk' + ${desk.getId()}" th:text="'0' + ${desk.id}"></td>
+        <td th:id="'queueNumber' + ${desk.getId()}"
+            th:text="${desk.queueNumber.getNumber()}" class=""></td>
+    </tr>
+    </tbody>
+</table>
+<button id="notifyButton" hidden
+        onclick="notify(); flashing()"></button>
+<audio id="notify" src="/audio/notification.mp3"></audio>
+</body>
+</html>
