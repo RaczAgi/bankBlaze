@@ -14,6 +14,8 @@
     </h3>
     <div th:if="${queueNumber != null}">
         <h3>Ön előtt várakozók száma: <span th:text="${count}" style="color: blue;"></span></h3>
+        <h3>Érkezési időpont: <span th:text="${#temporals.format(queueNumber.arrivalTime, 'yyyy-MM-dd HH:mm')}"></span></h3>
+    </div>
     </div>
 </div>
 <div class="frame">

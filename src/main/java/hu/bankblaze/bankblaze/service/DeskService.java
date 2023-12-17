@@ -6,9 +6,11 @@ import hu.bankblaze.bankblaze.model.Permission;
 import hu.bankblaze.bankblaze.model.QueueNumber;
 import hu.bankblaze.bankblaze.repo.DeskRepository;
 import hu.bankblaze.bankblaze.repo.EmployeeRepository;
+import hu.bankblaze.bankblaze.repo.QueueNumberRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -18,6 +20,7 @@ public class DeskService {
     private EmployeeRepository employeeRepository;
     private QueueNumberService queueNumberService;
     private PermissionService permissionService;
+    private QueueNumberRepository queueNumberRepository;
 
 
     public Desk getDeskById(Long id) {
@@ -86,6 +89,8 @@ public class DeskService {
                 queueNumberList.add(queueNumberService.getNextPremium());
             }
             QueueNumber queueNumber = queueNumberService.getSmallestNumber(queueNumberList);
+            queueNumber.setEmployeeTime(LocalDateTime.now());
+            queueNumberRepository.save(queueNumber);
             desk.setQueueNumber(queueNumber);
             deskRepository.save(desk);
             return desk;

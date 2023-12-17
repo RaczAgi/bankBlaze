@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.util.Map;
 
 
@@ -61,6 +62,10 @@ public class AdminController {
                 queueNumberService.countPremium() - deskService.countPremiumCustomersUnderService());
         model.addAttribute("premiumAtDesk", deskService.countPremiumCustomersUnderService());
         model.addAttribute("premiumSum", queueNumberService.countPremium());
+        Duration averageWaitingTime = queueNumberService.calculateAverageWaitingTime();
+        String formattedAverageWaitingTime = queueNumberService.formatDuration(averageWaitingTime);
+        model.addAttribute("waitingSum", formattedAverageWaitingTime);
+
         return "statistics";
     }
 

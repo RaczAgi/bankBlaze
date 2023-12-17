@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @Controller
 @AllArgsConstructor
 @RequestMapping("/queue")
@@ -17,6 +19,7 @@ public class QueueNumberController {
     public String showQueueNumberPage(Model model) throws Exception {
         model.addAttribute("queueNumber", queueNumberService.getQueueNumber());
         model.addAttribute("count", queueNumberService.getCount());
+        model.addAttribute("localTime", queueNumberService.getQueueNumber().getArrivalTime());
         return "showNumber";
     }
 

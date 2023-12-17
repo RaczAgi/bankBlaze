@@ -44,6 +44,7 @@
         <th>Várakozók száma</th>
         <th>Kiszolgálás alatt</th>
         <th>Összesen</th>
+        <th>Átlagos várakozási idő</th>
     </tr>
 
     </thead>
@@ -53,24 +54,28 @@
         <td th:text="${retailLeft} < 0 ? 0 : ${retailLeft}"></td>
         <td th:text="${retailAtDesk}"></td>
         <td th:text="${retailSum}"></td>
+        <td th:text="${waitingSum}"></td>
     </tr>
     <tr>
         <td>Vállalat</td>
         <td th:text="${corporateLeft} < 0 ? 0 : ${corporateLeft} "></td>
         <td th:text="${corporateAtDesk}"></td>
         <td th:text="${corporateSum}"></td>
+        <td th:text="${waitingSum}"></td>
     </tr>
     <tr>
         <td>Pénztár</td>
         <td th:text="${tellerLeft} < 0 ? 0 : ${tellerLeft}"></td>
         <td th:text="${tellerAtDesk}"></td>
         <td th:text="${tellerSum}"></td>
+        <td th:text="${waitingSum}"></td>
     </tr>
     <tr>
         <td>Premium</td>
         <td th:text="${premiumLeft} < 0 ? 0 : ${premiumLeft}"></td>
         <td th:text="${premiumAtDesk}"></td>
         <td th:text="${premiumSum}"></td>
+        <td th:text="${waitingSum}"></td>
     </tr>
     </tbody>
 </table>

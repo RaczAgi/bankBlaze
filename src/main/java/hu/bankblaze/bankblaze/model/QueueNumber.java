@@ -6,7 +6,11 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.sql.Time;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +31,24 @@ public class QueueNumber {
     private Boolean toTeller = false;
     private Boolean toPremium = false;
     private Boolean active = true;
+    private LocalDateTime arrivalTime;
+    private LocalDateTime employeeTime;
+    private Duration waitingTime;
+
+
 
     @OneToMany(mappedBy = "queueNumber", cascade = CascadeType.REMOVE)
     @JsonBackReference
     private List<Desk> desks = new ArrayList<>();
+
+    public void setArrivalTime() {
+        this.arrivalTime = LocalDateTime.now();
+    }
+
+    public void setWaitingTime() {
+        if (this.employeeTime != null && this.arrivalTime != null) {
+            this.waitingTime = Duration.between(this.arrivalTime, this.employeeTime);
+        }
+    }
+
 }

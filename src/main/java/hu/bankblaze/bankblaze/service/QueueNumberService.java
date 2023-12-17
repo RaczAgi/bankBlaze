@@ -3,12 +3,16 @@ package hu.bankblaze.bankblaze.service;
 import hu.bankblaze.bankblaze.model.QueueNumber;
 import hu.bankblaze.bankblaze.repo.QueueNumberRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.UserTransaction;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -44,6 +48,7 @@ public class QueueNumberService {
     }
 
     public void addQueueNumber(QueueNumber newQueueNumber) {
+        newQueueNumber.setArrivalTime();
         queueNumberRepository.save(newQueueNumber);
     }
 
@@ -151,4 +156,36 @@ public class QueueNumberService {
         return getQueueNumberById(minIndex);
     }
 
+    public Duration calculateAverageWaitingTime() {
+        List<QueueNumber> queueNumbers = queueNumberRepository.findAll();
+
+        // Szűrés azokra az elemekre, ahol mind az arrivalTime, mind az employeeTime nem null
+        List<QueueNumber> validQueueNumbers = queueNumbers.stream()
+                .filter(q -> q.getArrivalTime() != null && q.getEmployeeTime() != null)
+                .collect(Collectors.toList());
+
+        // Számítás az összes várakozási időből
+        Duration totalWaitingTime = Duration.ZERO;
+        for (QueueNumber queueNumber : validQueueNumbers) {
+            Duration waitingTime = Duration.between(queueNumber.getArrivalTime(), queueNumber.getEmployeeTime());
+            totalWaitingTime = totalWaitingTime.plus(waitingTime);
+        }
+
+        // Átlagos várakozási idő kiszámítása
+        int numberOfValidQueueNumbers = validQueueNumbers.size();
+        if (numberOfValidQueueNumbers > 0) {
+            return totalWaitingTime.dividedBy(numberOfValidQueueNumbers);
+        } else {
+            return Duration.ZERO; // Alapértelmezett érték, ha nincs érvényes várakozási idő
+        }
+    }
+
+    public String formatDuration(Duration duration) {
+        long seconds = duration.getSeconds();
+        long absSeconds = Math.abs(seconds);
+        long minutes = absSeconds / 60;
+
+        return String.format("%d perc", minutes);
+    }
 }
+

@@ -54,6 +54,8 @@
 
 <h1 id="next-customer"> A következő <span th:text="${actualPermission}"></span> ügyfél:
     <span th:text="${desk.getQueueNumber().getName()}" style="color: green;"></span></h1>
+<h1>Hívás időpontja: <span th:text="${#temporals.format(desk.getQueueNumber().getEmployeeTime(), 'yyyy-MM-dd HH:mm')}"></span></h1>
+
 <form th:action="@{/employee/recall}" method="post">
     <button type="submit" class="btn">Újrahívás</button>
 </form>
